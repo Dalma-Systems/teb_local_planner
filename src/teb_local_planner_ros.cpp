@@ -400,6 +400,10 @@ uint32_t TebLocalPlannerROS::computeVelocityCommands(const geometry_msgs::PoseSt
     ROS_WARN("TebLocalPlannerROS: trajectory is not feasible. Resetting planner...");
     
     ++no_infeasible_plans_; // increase number of infeasible solutions in a row
+    std_msgs::Int32 msg;
+    msg.data = no_infeasible_plans_;
+
+    visualization_->publishfeasible(msg);
     time_last_infeasible_plan_ = ros::Time::now();
     last_cmd_ = cmd_vel.twist;
     message = "teb_local_planner trajectory is not feasible";

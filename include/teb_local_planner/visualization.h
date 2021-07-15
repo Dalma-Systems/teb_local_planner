@@ -66,6 +66,8 @@
 #include <nav_msgs/Odometry.h>
 #include <nav_msgs/Path.h>
 #include <visualization_msgs/Marker.h>
+#include <std_msgs/Int32.h>
+
 
 namespace teb_local_planner
 {
@@ -159,6 +161,8 @@ public:
    * @param via_points via-point container
    */
   void publishViaPoints(const std::vector< Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d> >& via_points, const std::string& ns = "ViaPoints") const;
+  
+  void publishfeasible(const std_msgs::Int32& no_infeasible_plans) const;
   
   /**
    * @brief Publish a boost::adjacency_list (boost's graph datatype) via markers.
@@ -255,14 +259,16 @@ protected:
   ros::Publisher teb_poses_pub_; //!< Publisher for the trajectory pose sequence
   ros::Publisher teb_marker_pub_; //!< Publisher for visualization markers
   ros::Publisher feedback_pub_; //!< Publisher for the feedback message for analysis and debug purposes
-  
+
+
   const TebConfig* cfg_; //!< Config class that stores and manages all related parameters
   
   bool initialized_; //!< Keeps track about the correct initialization of this class
 
     
 public:
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW    
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW  
+    ros::Publisher feasibility_pub_; // Publisher for feasibility check   
 };
 
 //! Abbrev. for shared instances of the TebVisualization

@@ -39,6 +39,7 @@
 #include <teb_local_planner/visualization.h>
 #include <teb_local_planner/optimal_planner.h>
 #include <teb_local_planner/FeedbackMsg.h>
+#include <std_msgs/Int32.h>
 
 namespace teb_local_planner
 {
@@ -66,6 +67,7 @@ void TebVisualization::initialize(ros::NodeHandle& nh, const TebConfig& cfg)
   teb_poses_pub_ = nh.advertise<geometry_msgs::PoseArray>("teb_poses", 100);
   teb_marker_pub_ = nh.advertise<visualization_msgs::Marker>("teb_markers", 1000);
   feedback_pub_ = nh.advertise<teb_local_planner::FeedbackMsg>("teb_feedback", 10);  
+  feasibility_pub_ = nh.advertise<std_msgs::Int32>("no_infeasible", 3);
   
   initialized_ = true; 
 }
@@ -331,6 +333,10 @@ void TebVisualization::publishObstacles(const ObstContainer& obstacles) const
       teb_marker_pub_.publish( marker );     
     }
   }
+}
+void TebVisualization::publishfeasible(const std_msgs::Int32& no_infeasible_plans) const
+{
+  feasibility_pub_.publish(no_infeasible_plans);
 }
 
 
